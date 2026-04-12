@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="植物大战僵尸 - 经典塔防游戏网页版">
+    <title>植物大战僵尸</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        
+        <!-- Main Menu Overlay -->
+        <div id="menu-overlay" class="overlay">
+            <div class="menu-content">
+                <h1 class="game-title">
+                    <span class="title-plant">🌻 植物</span>
+                    <span class="title-vs">大战</span>
+                    <span class="title-zombie">僵尸 🧟</span>
+                </h1>
+                <p class="subtitle">经典塔防 · 网页版</p>
+                <button id="startBtn" class="menu-btn pulse-btn">开始游戏</button>
+                <div class="instructions">
+                    <p>🌞 收集阳光 · 种植植物 · 抵御僵尸</p>
+                    <p>点击种子栏选择植物，再点击草坪放置</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Overlay -->
+        <div id="gameover-overlay" class="overlay" style="display:none">
+            <div class="menu-content gameover">
+                <h1 class="gameover-title">💀 游戏结束</h1>
+                <p class="gameover-text">僵尸吃掉了你的脑子！</p>
+                <button id="retryBtn" class="menu-btn">重新开始</button>
+            </div>
+        </div>
+
+        <!-- Victory Overlay -->
+        <div id="victory-overlay" class="overlay" style="display:none">
+            <div class="menu-content victory">
+                <h1 class="victory-title">🎉 胜利！</h1>
+                <p class="victory-text">你成功抵御了所有僵尸！</p>
+                <button id="playAgainBtn" class="menu-btn">再来一局</button>
+            </div>
+        </div>
+
+        <!-- Seed Selection Bar (shown during gameplay) -->
+        <div id="seed-bar" style="display:none">
+            <div id="sun-counter">
+                <span class="sun-icon">☀️</span>
+                <span id="sun-amount">50</span>
+            </div>
+            <div id="seed-packets"></div>
+            <div id="shovel-btn" title="铲子 - 移除植物">⛏️</div>
+        </div>
+
+        <!-- Wave Info -->
+        <div id="wave-info" style="display:none">
+            <span id="wave-text">第 1 波</span>
+            <div id="wave-progress-bar">
+                <div id="wave-progress-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
