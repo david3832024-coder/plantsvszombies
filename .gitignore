@@ -1,3 +1,5 @@
 .DS_Store
 .vercel/
 node_modules/
+test.js
+wait_test.js
