@@ -1,8 +1,28 @@
 /* ==================== Game Constants & Elements ==================== */
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
-canvas.width = 1000;
-canvas.height = 600;
+
+// Internal resolution is always 1000x600.
+// We scale it visually via CSS transform to fill the screen.
+const GAME_W = 1000;
+const GAME_H = 600;
+canvas.width = GAME_W;
+canvas.height = GAME_H;
+
+function scaleCanvas() {
+    const scaleX = window.innerWidth / GAME_W;
+    const scaleY = window.innerHeight / GAME_H;
+    const scale = Math.min(scaleX, scaleY);
+    canvas.style.transform = `scale(${scale})`;
+    canvas.style.transformOrigin = 'top left';
+    canvas.style.position = 'absolute';
+    canvas.style.top = `${(window.innerHeight - GAME_H * scale) / 2}px`;
+    canvas.style.left = `${(window.innerWidth - GAME_W * scale) / 2}px`;
+    // Store scale for mouse mapping
+    canvas._scale = scale;
+}
+window.addEventListener('resize', scaleCanvas);
+scaleCanvas();
 
 const CELL_SIZE = 100;
 const ROWS = 5;
@@ -1009,11 +1029,11 @@ function showWaveBanner() {
 
 /* ==================== Input Handling ==================== */
 canvas.addEventListener('mousemove', e => {
+    const scale = canvas._scale || 1;
     const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    mouse.x = (e.clientX - rect.left) * scaleX;
-    mouse.y = (e.clientY - rect.top) * scaleY;
+    // rect.left/top already accounts for CSS transform position
+    mouse.x = (e.clientX - rect.left) / scale;
+    mouse.y = (e.clientY - rect.top) / scale;
 });
 
 canvas.addEventListener('mouseleave', () => {
@@ -1348,25 +1368,35 @@ function startWave() {
 }
 
 function initGame() {
+    // Clear all game state
     grid.length = 0;
     plants.length = 0;
     zombies.length = 0;
     projectiles.length = 0;
     drops.length = 0;
     particles.length = 0;
+    seedCards.length = 0; // Reset seed card references too
+    
+    // Reset music state
+    bgmStep = 0;
+    stopBGM();
     
     lawnmowers.length = 0;
     for (let row = 0; row < ROWS; row++) {
         lawnmowers.push(new Lawnmower(BOARD_Y + (row * CELL_SIZE)));
     }
     
-    sun = 500; // HUGE starting sun!
-    frames = 400; // Start at 400
+    sun = 500;
+    frames = 400;
     wave = 1;
     zombiesSpawned = 0;
     
+    // Reset all input state
     mouse.currentSeed = null;
+    mouse.shovel = false;
     canvas.style.cursor = 'default';
+    document.querySelectorAll('.seed-packet').forEach(c => c.classList.remove('selected'));
+    if (typeof shovelBtn !== 'undefined') shovelBtn.classList.remove('active');
     
     buildGrid();
     createUI();

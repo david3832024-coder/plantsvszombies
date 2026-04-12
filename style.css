@@ -9,30 +9,22 @@ body {
     background: #1a1a2e;
     font-family: 'Noto Sans SC', sans-serif;
     overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
     user-select: none;
 }
 
 /* ==================== Game Container ==================== */
 #game-container {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative;
     width: 100vw;
     height: 100vh;
-    border-radius: 0;
     overflow: hidden;
-    box-shadow: none;
+    background: #1a1a2e;
 }
 
 #gameCanvas {
     display: block;
-    width: 100%;
-    height: 100%;
-    border-radius: 0;
+    /* Size & position are controlled programmatically by scaleCanvas() in game.js */
+    image-rendering: pixelated;
 }
 
 /* ==================== Overlays ==================== */
