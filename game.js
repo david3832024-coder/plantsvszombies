@@ -30,6 +30,7 @@ const ROWS = 5;
 const COLS = 9;
 const BOARD_X = 50; // Centered precisely with CELL_SIZE=100
 const BOARD_Y = 80; // Optimized spacing
+const ZOMBIE_SPAWN_X = BOARD_X + (COLS * CELL_SIZE) - 80;
 
 // UI Elements
 const sunAmountEl = document.getElementById('sun-amount');
@@ -598,7 +599,7 @@ class Plant {
 
 class Zombie {
     constructor(y, type = 'normal') {
-        this.x = canvas.width;
+        this.x = ZOMBIE_SPAWN_X;
         this.y = y; // Keep exact grid Y for collision logic
         this.width = 65;
         this.height = 95;
