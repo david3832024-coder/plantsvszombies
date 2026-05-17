@@ -27,14 +27,17 @@
             <div class="load-subtitle">（ 花果山版 ）</div>
         </div>
 
-        <!-- Progress Bar Section -->
-        <div class="load-bar-section">
-            <div class="load-bar-track">
-                <div class="load-bar-fill" id="loadBarFill"></div>
-                <!-- Zombie that sits at the front of the fill -->
-                <div class="load-zombie-puller" id="loadZombie">🧟</div>
+        <!-- Chase Progress Section -->
+        <div class="load-chase-section">
+            <div class="load-chase-stage">
+                <img class="load-runner" id="loadRunner" src="assets/loader_runner.png" alt="">
+                <img class="load-zombie-puller" id="loadZombie" src="assets/loader_zombie.png" alt="">
+                <div class="load-bar-track" aria-hidden="true">
+                    <div class="load-bar-fill" id="loadBarFill"></div>
+                </div>
+                <div class="load-chase-dust"></div>
             </div>
-            <div class="load-bar-label" id="loadLabel">僵尸正在入侵... 0%</div>
+            <div class="load-bar-label" id="loadLabel">僵尸正在追赶小人... 0%</div>
         </div>
 
         <!-- Canvas for particle / drool effects on zombie -->

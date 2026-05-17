@@ -1,11 +1,13 @@
 /* =============================================================
    loader.js — Loading screen controller
-   Tracks asset loading, drives the zombie progress bar canvas,
+   Tracks asset loading, drives the zombie chase progress scene,
    and fades out once everything is ready.
 ============================================================= */
 
 (function () {
     const ASSETS = [
+        'assets/loader_zombie.png',
+        'assets/loader_runner.png',
         'custom_zombie.png',
         'zombie_cone.png',
         'sunflower.png',
@@ -19,9 +21,10 @@
     let animFrame;
 
     const barFill    = document.getElementById('loadBarFill');
-    const zombieEl   = document.getElementById('loadZombie');
-    const labelEl    = document.getElementById('loadLabel');
-    const loadScreen = document.getElementById('loading-screen');
+    const zombieEl      = document.getElementById('loadZombie');
+    const runnerEl      = document.getElementById('loadRunner');
+    const labelEl       = document.getElementById('loadLabel');
+    const loadScreen    = document.getElementById('loading-screen');
     const gameContainer = document.getElementById('game-container');
 
     // ─── Canvas for drool / breath particles ───────────────────
@@ -70,44 +73,58 @@
         }
     }
 
-    // ─── Animate bar and zombie ─────────────────────────────────
+    // ─── Animate progress and chase scene ───────────────────────
     let zombieWalkFrame = 0;
+    const loadingStartedAt = performance.now();
+    const MIN_LOAD_MS = 6200;
     const LOADING_TEXTS = [
-        '僵尸正在集合... ',
-        '脑子气息弥漫... ',
-        '防线岌岌可危... ',
-        '植物正在觉醒... ',
+        '僵尸闻到了脑子... ',
+        '小人正在狂奔... ',
+        '僵尸越追越近... ',
+        '防线即将展开... ',
         '花果山战局打响... '
     ];
 
     function animate() {
         animFrame = requestAnimationFrame(animate);
 
-        // Smoothly chase targetProgress
-        progress += (targetProgress - progress) * 0.04;
+        const elapsed = performance.now() - loadingStartedAt;
+        const timedProgress = Math.min(100, (elapsed / MIN_LOAD_MS) * 100);
+        const visibleTarget = Math.min(targetProgress, timedProgress);
+
+        // Smoothly chase the throttled target so the loading scene has time to play.
+        progress += (visibleTarget - progress) * 0.045;
         const pct = Math.min(progress, 100);
 
-        // Update bar width
+        // Update the real progress bar under the zombie's feet.
         barFill.style.width = pct + '%';
 
-        // Move zombie to sit just at the right edge of the fill
-        // The bar track is 70vw wide centred on page
         const trackEl = barFill.parentElement;
         const trackRect = trackEl.getBoundingClientRect();
-        const fillPx = trackRect.width * (pct / 100);
-        // Place zombie anchored to the fill edge
-        zombieEl.style.left = `calc(${pct}% - 30px)`;
+        const zombieWidth = zombieEl.getBoundingClientRect().width || 88;
+        const runnerWidth = runnerEl.getBoundingClientRect().width || 44;
+        const zombieCenter = trackRect.width * (pct / 100);
+        const zombieLeft = Math.max(-zombieWidth * 0.35, Math.min(trackRect.width - zombieWidth * 0.58, zombieCenter - zombieWidth * 0.5));
+        const chaseGap = Math.max(24, 84 - pct * 0.46);
+        const runnerLeft = Math.max(42, Math.min(trackRect.width - runnerWidth - 8, zombieLeft + zombieWidth * 0.86 + chaseGap));
 
         // Walk animation (bounce)
         zombieWalkFrame++;
         const bounce = Math.sin(zombieWalkFrame * 0.25) * 4;
         const tilt   = Math.sin(zombieWalkFrame * 0.2) * 6; // degrees
-        zombieEl.style.transform = `translateY(${bounce}px) rotate(${-tilt}deg) scaleX(-1)`;
+        const runnerBounce = Math.sin(zombieWalkFrame * 0.42) * 5;
+
+        zombieEl.style.left = `${zombieLeft}px`;
+        zombieEl.style.transform = `translateY(${bounce}px) rotate(${-tilt}deg)`;
+        zombieEl.style.setProperty('--eye-look-x', `${Math.min(7, Math.max(2, (runnerLeft - zombieLeft) * 0.055))}px`);
+        zombieEl.style.setProperty('--eye-look-y', `${Math.sin(zombieWalkFrame * 0.16) * 1.4}px`);
+        runnerEl.style.left = `${runnerLeft}px`;
+        runnerEl.style.transform = `translateY(${runnerBounce}px) rotate(${Math.sin(zombieWalkFrame * 0.2) * 3}deg)`;
 
         // Drool particles from zombie mouth area
         if (zombieWalkFrame % 8 === 0 && pct < 99) {
             const zRect = zombieEl.getBoundingClientRect();
-            spawnParticle(zRect.left + zRect.width * 0.3, zRect.top + zRect.height * 0.6);
+            spawnParticle(zRect.left + zRect.width * 0.68, zRect.top + zRect.height * 0.46);
         }
 
         tickParticles();
@@ -126,7 +143,8 @@
     // ─── Asset loading ─────────────────────────────────────────
     ASSETS.forEach(src => {
         const img = new Image();
-        img.onload  = img.onerror = onAssetDone;
+        img.onload = onAssetDone;
+        img.onerror = onAssetDone;
         img.src = src + '?t=' + Date.now();
     });
 
@@ -148,9 +166,9 @@
     // Start the loop
     animate();
 
-    // Guarantee finish even if images load instantly (min 2.5 s)
+    // Guarantee finish even if a browser stalls an image event.
     setTimeout(() => {
         targetProgress = 100;
-    }, 2500);
+    }, MIN_LOAD_MS + 1200);
 
 })();
