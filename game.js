@@ -45,17 +45,28 @@ const menuOverlay = document.getElementById('menu-overlay');
 const gameoverOverlay = document.getElementById('gameover-overlay');
 const victoryOverlay = document.getElementById('victory-overlay');
 const startBtn = document.getElementById('startBtn');
+const tutorialBtn = document.getElementById('tutorialBtn');
+const tutorialOverlay = document.getElementById('tutorial-overlay');
+const tutorialStartBtn = document.getElementById('tutorialStartBtn');
+const tutorialCloseBtn = document.getElementById('tutorialCloseBtn');
 const retryBtn = document.getElementById('retryBtn');
 const playAgainBtn = document.getElementById('playAgainBtn');
+const levelBtns = document.querySelectorAll('.level-btn');
+const levelLoadingOverlay = document.getElementById('level-loading-overlay');
+const levelLoadTitle = document.getElementById('levelLoadTitle');
+const levelLoadFill = document.getElementById('levelLoadFill');
 
 /* ==================== Game State ==================== */
 let frames = 0;
 let gameRunning = false;
 let sun = 50;
 let wave = 1;
+let selectedLevel = 1;
+let currentStartLevel = 1;
 let zombiesSpawned = 0;
 let waveTotalZombies = 10;
 let zombieSpawnRate = 400;
+let levelTransitioning = false;
 
 const mouse = { x: 0, y: 0, clicked: false, currentSeed: null, shovel: false };
 const grid = [];
@@ -1027,6 +1038,56 @@ function showWaveBanner() {
     }, 2000);
 }
 
+function setSelectedLevel(level) {
+    selectedLevel = Math.max(1, Math.min(5, Number(level) || 1));
+    levelBtns.forEach(btn => {
+        btn.classList.toggle('active', Number(btn.dataset.level) === selectedLevel);
+    });
+}
+
+function showLevelLoading(level, onDone) {
+    levelTransitioning = true;
+    levelLoadTitle.innerText = `第 ${level} 关`;
+    levelLoadFill.style.width = '0%';
+    levelLoadingOverlay.style.display = 'flex';
+
+    let pct = 0;
+    const startedAt = performance.now();
+    const minDuration = 1300;
+
+    function tick(now) {
+        const timePct = Math.min(100, ((now - startedAt) / minDuration) * 100);
+        pct += (timePct - pct) * 0.18;
+        levelLoadFill.style.width = `${Math.min(100, pct)}%`;
+
+        if (pct < 99.2) {
+            requestAnimationFrame(tick);
+            return;
+        }
+
+        levelLoadFill.style.width = '100%';
+        setTimeout(() => {
+            levelLoadingOverlay.style.display = 'none';
+            levelTransitioning = false;
+            onDone();
+        }, 180);
+    }
+
+    requestAnimationFrame(tick);
+}
+
+function beginSelectedLevel(level = selectedLevel) {
+    initAudio();
+    currentStartLevel = Math.max(1, Math.min(5, Number(level) || 1));
+    setSelectedLevel(currentStartLevel);
+    menuOverlay.style.display = 'none';
+    gameoverOverlay.style.display = 'none';
+    victoryOverlay.style.display = 'none';
+    selectBar.style.display = 'flex';
+    waveInfo.style.display = 'flex';
+    initGame(currentStartLevel);
+}
+
 /* ==================== Input Handling ==================== */
 canvas.addEventListener('mousemove', e => {
     const scale = canvas._scale || 1;
@@ -1198,14 +1259,14 @@ function handleZombies() {
                 if (wave > 5) { // 5 waves to win
                     endGame(true); // Won!
                 } else {
-                    startWave();
+                    showLevelLoading(wave, startWave);
                 }
             }
         }
     }
 
     // Spawn logic
-    if (frames % zombieSpawnRate === 0 && zombiesSpawned < waveTotalZombies) {
+    if (!levelTransitioning && frames % zombieSpawnRate === 0 && zombiesSpawned < waveTotalZombies) {
         let row = Math.floor(Math.random() * ROWS);
         let y = BOARD_Y + (row * CELL_SIZE);
         
@@ -1367,7 +1428,7 @@ function startWave() {
     sfx.voice("添添，请做好准备！迎接战斗！");
 }
 
-function initGame() {
+function initGame(startLevel = 1) {
     // Clear all game state
     grid.length = 0;
     plants.length = 0;
@@ -1388,7 +1449,7 @@ function initGame() {
     
     sun = 500;
     frames = 400;
-    wave = 1;
+    wave = Math.max(1, Math.min(5, Number(startLevel) || 1));
     zombiesSpawned = 0;
     
     // Reset all input state
@@ -1401,10 +1462,10 @@ function initGame() {
     buildGrid();
     createUI();
     updateSunDisplay();
-    startWave();
     
     gameRunning = true;
     animate();
+    showLevelLoading(wave, startWave);
 }
 
 function endGame(won) {
@@ -1422,27 +1483,34 @@ function endGame(won) {
 
 /* ==================== Event Listeners ==================== */
 startBtn.addEventListener('click', () => {
-    initAudio();
-    menuOverlay.style.display = 'none';
-    selectBar.style.display = 'flex';
-    waveInfo.style.display = 'flex';
-    initGame();
+    beginSelectedLevel(selectedLevel);
+});
+
+tutorialBtn.addEventListener('click', () => {
+    tutorialOverlay.style.display = 'flex';
+});
+
+tutorialCloseBtn.addEventListener('click', () => {
+    tutorialOverlay.style.display = 'none';
+});
+
+tutorialStartBtn.addEventListener('click', () => {
+    tutorialOverlay.style.display = 'none';
+    beginSelectedLevel(selectedLevel);
+});
+
+levelBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        beginSelectedLevel(Number(btn.dataset.level));
+    });
 });
 
 retryBtn.addEventListener('click', () => {
-    initAudio();
-    gameoverOverlay.style.display = 'none';
-    selectBar.style.display = 'flex';
-    waveInfo.style.display = 'flex';
-    initGame();
+    beginSelectedLevel(currentStartLevel);
 });
 
 playAgainBtn.addEventListener('click', () => {
-    initAudio();
-    victoryOverlay.style.display = 'none';
-    selectBar.style.display = 'flex';
-    waveInfo.style.display = 'flex';
-    initGame();
+    beginSelectedLevel(selectedLevel);
 });
 
 // Initial Setup

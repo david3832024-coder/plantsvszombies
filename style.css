@@ -420,6 +420,14 @@ body {
 }
 
 /* ==================== Buttons ==================== */
+.menu-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
 .menu-btn {
     padding: 14px 50px;
     font-size: 22px;
@@ -445,6 +453,15 @@ body {
     transform: translateY(0) scale(0.98);
 }
 
+.secondary-btn {
+    background: linear-gradient(180deg, #8B5E2E, #5E3718);
+}
+
+.secondary-btn:hover {
+    background: linear-gradient(180deg, #A87438, #70451F);
+    box-shadow: 0 8px 25px rgba(255, 176, 64, 0.26);
+}
+
 .pulse-btn {
     animation: pulse 2s ease-in-out infinite;
 }
@@ -459,6 +476,219 @@ body {
     color: rgba(255, 255, 255, 0.7);
     font-size: 13px;
     line-height: 2;
+}
+
+.level-nav {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(72px, 1fr));
+    gap: 8px;
+    margin: 0 auto 22px;
+    max-width: 460px;
+}
+
+.level-btn {
+    min-height: 42px;
+    border: 2px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    background: linear-gradient(180deg, rgba(89, 63, 35, 0.92), rgba(45, 30, 14, 0.95));
+    color: rgba(255, 240, 198, 0.9);
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 5px 12px rgba(0, 0, 0, 0.28);
+    transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.level-btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 215, 0, 0.42);
+}
+
+.level-btn.active {
+    color: #2d1b09;
+    border-color: rgba(255, 235, 120, 0.85);
+    background: linear-gradient(180deg, #ffd95a, #e79828);
+    box-shadow: 0 0 18px rgba(255, 190, 44, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.tutorial-overlay {
+    z-index: 130;
+}
+
+.tutorial-content {
+    width: min(88vw, 880px);
+    min-height: 430px;
+    display: grid;
+    grid-template-columns: minmax(190px, 280px) 1fr;
+    gap: 28px;
+    align-items: end;
+    padding: 34px;
+    border-radius: 18px;
+    background:
+        linear-gradient(145deg, rgba(25, 96, 62, 0.95), rgba(17, 49, 38, 0.96)),
+        rgba(0, 0, 0, 0.85);
+    border: 3px solid rgba(255, 236, 155, 0.22);
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.56), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.tutorial-guide {
+    width: min(100%, 270px);
+    align-self: end;
+    justify-self: center;
+    filter: drop-shadow(0 16px 16px rgba(0, 0, 0, 0.55));
+    animation: tutorialGuideBob 1.6s ease-in-out infinite;
+}
+
+.tutorial-copy {
+    text-align: left;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.tutorial-kicker {
+    color: rgba(255, 218, 112, 0.78);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 5px;
+    margin-bottom: 6px;
+}
+
+.tutorial-copy h2 {
+    color: #ffe36f;
+    font-size: clamp(30px, 5vw, 48px);
+    line-height: 1.1;
+    margin-bottom: 10px;
+    text-shadow: 0 0 18px rgba(255, 160, 35, 0.45), 3px 4px 0 rgba(38, 20, 0, 0.55);
+}
+
+.tutorial-intro {
+    font-size: 17px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.82);
+    margin-bottom: 16px;
+}
+
+.tutorial-steps {
+    margin: 0;
+    padding-left: 22px;
+    display: grid;
+    gap: 10px;
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+.tutorial-steps strong {
+    color: #ffe36f;
+}
+
+.tutorial-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+}
+
+.tutorial-actions .menu-btn {
+    padding: 12px 26px;
+    font-size: 18px;
+}
+
+@keyframes tutorialGuideBob {
+    0%, 100% { transform: translateY(0) rotate(-1deg); }
+    50%      { transform: translateY(-8px) rotate(2deg); }
+}
+
+.level-loading-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 120;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(72, 35, 8, 0.45), rgba(0, 0, 0, 0.88) 72%),
+        rgba(0, 0, 0, 0.76);
+    backdrop-filter: blur(7px);
+}
+
+.level-load-panel {
+    width: min(78vw, 620px);
+    text-align: center;
+    padding: 18px 24px 24px;
+}
+
+.level-load-meta {
+    color: rgba(255, 211, 116, 0.72);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 6px;
+    margin-bottom: 8px;
+}
+
+.level-load-title {
+    color: #ffe36f;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 900;
+    text-shadow: 0 0 18px rgba(255, 130, 34, 0.65), 3px 4px 0 rgba(64, 24, 0, 0.8);
+}
+
+.level-load-chase {
+    position: relative;
+    height: 150px;
+    margin-top: 4px;
+    border-bottom: 2px solid rgba(255, 214, 112, 0.28);
+    overflow: hidden;
+}
+
+.level-load-zombie,
+.level-load-runner {
+    position: absolute;
+    bottom: 6px;
+    height: auto;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+    filter: drop-shadow(0 12px 12px rgba(0, 0, 0, 0.78));
+}
+
+.level-load-zombie {
+    left: 22%;
+    width: 126px;
+    animation: levelZombieRun 0.44s ease-in-out infinite;
+}
+
+.level-load-runner {
+    right: 18%;
+    width: 104px;
+    animation: levelRunnerRun 0.36s ease-in-out infinite;
+}
+
+.level-load-track {
+    height: 10px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 219, 126, 0.25);
+    margin-top: 16px;
+}
+
+.level-load-fill {
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #61d34a, #ffe163, #ff8c2f);
+    box-shadow: 0 0 14px rgba(255, 173, 48, 0.64);
+    transition: width 0.12s linear;
+}
+
+@keyframes levelZombieRun {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50%      { transform: translateY(-5px) rotate(2deg); }
+}
+
+@keyframes levelRunnerRun {
+    0%, 100% { transform: translateY(0) rotate(2deg); }
+    50%      { transform: translateY(-6px) rotate(-2deg); }
 }
 
 /* ==================== Seed Bar ==================== */
@@ -656,5 +886,25 @@ body {
 @media (max-width: 1040px) {
     #seed-bar {
         font-size: 14px;
+    }
+
+    .menu-content {
+        padding: 30px 24px;
+        width: min(92vw, 560px);
+    }
+
+    .level-nav {
+        grid-template-columns: repeat(3, minmax(76px, 1fr));
+    }
+
+    .tutorial-content {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        max-height: 88vh;
+        overflow-y: auto;
+    }
+
+    .tutorial-guide {
+        width: min(42vw, 170px);
     }
 }

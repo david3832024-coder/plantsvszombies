@@ -57,10 +57,57 @@
                     <span class="title-zombie">僵尸 🧟</span>
                 </h1>
                 <p class="subtitle">经典塔防 · 网页版</p>
-                <button id="startBtn" class="menu-btn pulse-btn">开始游戏</button>
+                <nav id="level-nav" class="level-nav" aria-label="关卡选择">
+                    <button class="level-btn active" data-level="1">第 1 关</button>
+                    <button class="level-btn" data-level="2">第 2 关</button>
+                    <button class="level-btn" data-level="3">第 3 关</button>
+                    <button class="level-btn" data-level="4">第 4 关</button>
+                    <button class="level-btn" data-level="5">第 5 关</button>
+                </nav>
+                <div class="menu-actions">
+                    <button id="startBtn" class="menu-btn pulse-btn">开始游戏</button>
+                    <button id="tutorialBtn" class="menu-btn secondary-btn">游戏教程</button>
+                </div>
                 <div class="instructions">
                     <p>🌞 收集阳光 · 种植植物 · 抵御僵尸</p>
                     <p>点击种子栏选择植物，再点击草坪放置</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tutorial Overlay -->
+        <div id="tutorial-overlay" class="overlay tutorial-overlay" style="display:none">
+            <div class="tutorial-content">
+                <img class="tutorial-guide" src="assets/loader_runner.png" alt="">
+                <div class="tutorial-copy">
+                    <p class="tutorial-kicker">新手讲解员</p>
+                    <h2>我叫花果山</h2>
+                    <p class="tutorial-intro">刚才被僵尸追的就是我。别慌，我先教你怎么守住这片草坪。</p>
+                    <ol class="tutorial-steps">
+                        <li><strong>先收集阳光。</strong>点击天上掉下来的阳光，也可以种向日葵持续产阳光。</li>
+                        <li><strong>再选择植物。</strong>点顶部种子卡片，阳光足够并且冷却结束后，就能在草坪格子里种下。</li>
+                        <li><strong>按路线防守。</strong>僵尸会从右边来，植物要种在同一行拦住它们。</li>
+                        <li><strong>善用铲子和关卡。</strong>铲子可以移除植物，主菜单可以直接选择第 1 到第 5 关练习。</li>
+                    </ol>
+                    <div class="tutorial-actions">
+                        <button id="tutorialStartBtn" class="menu-btn">我会了，开始</button>
+                        <button id="tutorialCloseBtn" class="menu-btn secondary-btn">返回菜单</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Level Loading Overlay -->
+        <div id="level-loading-overlay" class="level-loading-overlay" style="display:none">
+            <div class="level-load-panel">
+                <div class="level-load-meta">关卡加载中</div>
+                <div class="level-load-title" id="levelLoadTitle">第 1 关</div>
+                <div class="level-load-chase">
+                    <img class="level-load-zombie" src="assets/loader_zombie.png" alt="">
+                    <img class="level-load-runner" src="assets/loader_runner.png" alt="">
+                </div>
+                <div class="level-load-track">
+                    <div class="level-load-fill" id="levelLoadFill"></div>
                 </div>
             </div>
         </div>
