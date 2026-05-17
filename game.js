@@ -13,10 +13,11 @@ function scaleCanvas() {
     const scaleX = window.innerWidth / GAME_W;
     const scaleY = window.innerHeight / GAME_H;
     const scale = Math.min(scaleX, scaleY);
+    const isMobilePortrait = window.innerWidth <= 700 && window.innerHeight > window.innerWidth;
     canvas.style.transform = `scale(${scale})`;
     canvas.style.transformOrigin = 'top left';
     canvas.style.position = 'absolute';
-    canvas.style.top = `${(window.innerHeight - GAME_H * scale) / 2}px`;
+    canvas.style.top = isMobilePortrait ? '84px' : `${(window.innerHeight - GAME_H * scale) / 2}px`;
     canvas.style.left = `${(window.innerWidth - GAME_W * scale) / 2}px`;
     // Store scale for mouse mapping
     canvas._scale = scale;

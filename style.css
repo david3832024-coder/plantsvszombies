@@ -908,3 +908,229 @@ body {
         width: min(42vw, 170px);
     }
 }
+
+@media (max-width: 700px) and (orientation: portrait) {
+    #loading-screen {
+        justify-content: flex-start;
+        padding-top: 16vh;
+    }
+
+    .load-title-block {
+        margin-bottom: 32px;
+    }
+
+    .load-main-title {
+        flex-wrap: wrap;
+        gap: 4px 8px;
+    }
+
+    .load-word-plants,
+    .load-word-zombies {
+        font-size: clamp(44px, 15vw, 64px);
+        letter-spacing: 0;
+    }
+
+    .load-word-vs {
+        font-size: clamp(30px, 10vw, 44px);
+    }
+
+    .load-subtitle {
+        letter-spacing: 6px;
+    }
+
+    .load-chase-section {
+        width: min(90vw, 360px);
+    }
+
+    .load-chase-stage {
+        height: 118px;
+    }
+
+    .load-zombie-puller {
+        width: clamp(96px, 31vw, 122px);
+    }
+
+    .load-runner {
+        width: clamp(74px, 24vw, 96px);
+    }
+
+    .overlay {
+        align-items: flex-start;
+        overflow-y: auto;
+        padding: 18px 0;
+    }
+
+    .menu-content {
+        width: min(92vw, 370px);
+        min-height: auto;
+        padding: 24px 18px;
+        border-radius: 16px;
+    }
+
+    .game-title {
+        font-size: 34px;
+        line-height: 1.18;
+    }
+
+    .title-vs {
+        font-size: 26px;
+    }
+
+    .subtitle {
+        margin-bottom: 20px;
+    }
+
+    .level-nav {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-bottom: 18px;
+    }
+
+    .level-btn {
+        min-height: 40px;
+        font-size: 13px;
+    }
+
+    .menu-actions {
+        gap: 10px;
+    }
+
+    .menu-btn {
+        width: min(100%, 230px);
+        padding: 12px 20px;
+        font-size: 20px;
+    }
+
+    .instructions {
+        margin-top: 18px;
+        font-size: 12px;
+        line-height: 1.7;
+    }
+
+    .tutorial-content {
+        width: min(92vw, 370px);
+        max-height: none;
+        min-height: auto;
+        padding: 20px 20px 22px;
+        gap: 8px;
+        overflow: visible;
+        align-items: center;
+    }
+
+    .tutorial-guide {
+        width: min(38vw, 128px);
+    }
+
+    .tutorial-kicker {
+        font-size: 12px;
+        letter-spacing: 3px;
+    }
+
+    .tutorial-copy h2 {
+        font-size: 32px;
+        margin-bottom: 8px;
+    }
+
+    .tutorial-intro {
+        font-size: 14px;
+        line-height: 1.55;
+        margin-bottom: 12px;
+    }
+
+    .tutorial-steps {
+        gap: 7px;
+        font-size: 13px;
+        line-height: 1.45;
+        padding-left: 18px;
+    }
+
+    .tutorial-actions {
+        margin-top: 16px;
+        gap: 9px;
+    }
+
+    .tutorial-actions .menu-btn {
+        width: auto;
+        min-width: 132px;
+        padding: 10px 16px;
+        font-size: 16px;
+    }
+
+    #seed-bar {
+        height: 74px;
+        gap: 5px;
+        padding: 0 8px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: none;
+    }
+
+    #seed-bar::-webkit-scrollbar {
+        display: none;
+    }
+
+    #sun-counter {
+        min-width: 82px;
+        padding: 5px 10px;
+        margin-right: 3px;
+        flex: 0 0 auto;
+    }
+
+    .sun-icon {
+        font-size: 20px;
+    }
+
+    #sun-amount {
+        font-size: 19px;
+    }
+
+    #seed-packets {
+        flex: 0 0 auto;
+        gap: 4px;
+    }
+
+    .seed-packet {
+        width: 48px;
+        height: 54px;
+        flex: 0 0 48px;
+        border-radius: 7px;
+    }
+
+    .seed-packet .seed-emoji {
+        font-size: 19px;
+    }
+
+    .seed-packet .seed-cost {
+        font-size: 10px;
+    }
+
+    #shovel-btn {
+        width: 46px;
+        height: 46px;
+        flex: 0 0 46px;
+        margin-left: 0;
+        font-size: 21px;
+    }
+
+    #wave-info {
+        right: 50%;
+        bottom: 10px;
+        transform: translateX(50%);
+        width: min(88vw, 300px);
+        justify-content: center;
+    }
+
+    #wave-progress-bar {
+        flex: 1;
+        max-width: 190px;
+    }
+
+    .wave-banner {
+        width: 92vw;
+        font-size: 23px;
+        line-height: 1.35;
+        text-align: center;
+        white-space: normal;
+        top: 52%;
+    }
+}
